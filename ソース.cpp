@@ -282,6 +282,7 @@ bool Update(BattleSystem& In) {
 	if (Now+In.Wait< clock()) {
 		AddCount(In);
 		if (In.Adder.Base + In.Adder.Long < In.Count) {
+			In.Adder.Base = In.Count;
 			for (size_t i = 0; i < Size(In.Box); i++) {
 				if (Index(In.Box, i) == NULL) { continue; }
 				if (IsLocking(Index(In.Box, i)->B) == true) { continue; }

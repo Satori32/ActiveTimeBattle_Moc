@@ -262,6 +262,9 @@ bool StartBattle(BattleSystem& In) {
 	}
 	return true;
 }
+bool EndBattle(BattleSystem& In) {
+	return false;
+}
 
 bool AddCount(BattleSystem& In) {
 	In.Count++;

@@ -277,15 +277,20 @@ bool Conflict(BattleSystem& In, FixedVector<Command, N>& B) {
 bool Update(BattleSystem& In) {
 	clock_t Now = clock();
 	FixedVector<Command, 64> Cs=ConstructFixedVector<Command,64>();
-	if (In.Adder.Base + In.Adder.Long < clock() + In.Wait) {
+
+
+	if (Now+In.Wait< clock()) {
 		AddCount(In);
-		In.Adder.Base = clock();
+		if (In.Adder.Base + In.Adder.Long < In.Count) {
+			for (size_t i = 0; i < Size(In.Box); i++) {
+				if (Index(In.Box, i) == NULL) { continue; }
+				if (IsLocking(Index(In.Box, i)->B) == true) { continue; }
+				Command C = Update(Index(In.Box, i)->A, In);
+				Push(Cs, C);
+			}
+			return Conflict(In, Cs);
+		}
 	}
-	for (size_t i = 0; i < Size(In.Box); i++) {
-		if (Index(In.Box, i) == NULL) { continue; }
-		if (IsLocking(Index(In.Box, i)->B) == true) { continue; }
-		Command C =  Update(Index(In.Box, i)->A, In);
-		Push(Cs, C);
-	}
-	return Conflict(In,Cs);
+
+	return false;
 }

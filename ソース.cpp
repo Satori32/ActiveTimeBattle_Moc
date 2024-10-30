@@ -30,6 +30,30 @@ bool Free(Statas& In) {
 
 	return true;
 }
+struct ConditionItem {
+	int16_t ID = 0;
+	Clock Time;
+	int16_t Parmittion[128] = { 0, };//can replace vector.
+	//type T = NULL;
+	typedef int T;
+	T Hide;
+};
+
+template<class T>
+ConditionItem ConstructConditonItem<T>(int16_t ID) {
+	ConditionItem C = { 0, };
+	C.ID = ID;
+
+	return C;
+}
+bool Free(ConditionItem& In) {
+	Free(In.ID);
+	Free(In.Time);
+	Free(In.Hide);
+}
+struct ConditionBag {
+	FixedVector<ConditionItem, 128> C;
+};
 struct Parsonal {
 	char* Name = NULL;
 	int16_t Age = 0;
@@ -190,13 +214,24 @@ Command Update(AIInfo& In,BattleSystem& B,int16_t CharNum) {
 	return C;
 }
 
+struct AliveFlag {
+	bool IsAlive = false;
+	int Reason = 0;//i need like a EnumClass On C++.
+	//type T = NULL;
+	typedef int T;
+	T Hide;
+};
+
 struct Profile {
 	Parsonal P = { 0, };
 	Statas S = { 0, };
+	ConditionBag Good = {0,};
+	ConditionBag Bad = { 0, };
 	ClassInfo C = { 0, };
 	BattleInfo B = { 0, };
 	BattleInfo Use = { 0, };
 	AIInfo A = { 0, };
+	AliveFlag F = { 0, };
 };
 
 struct Clock_t {
@@ -285,7 +320,7 @@ bool Update(BattleSystem& In) {
 			In.Adder.Base = In.Count;
 			for (size_t i = 0; i < Size(In.Box); i++) {
 				if (Index(In.Box, i) == NULL) { continue; }
-				if (IsLocking(Index(In.Box, i)->B) == true) { continue; }
+				if (IsLocking(Index(In.Box, i)->Use) == true) { continue; }
 				Command C = Update(Index(In.Box, i)->A, In);
 				Push(Cs, C);
 			}

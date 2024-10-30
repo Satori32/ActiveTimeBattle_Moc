@@ -179,8 +179,9 @@ bool Free(AIInfo& In) {
 	return true;	
 }
 
-Command Update(AIInfo& In,BattleSystem& B) {
+Command Update(AIInfo& In,BattleSystem& B,int16_t CharNum) {
 	Command C = { 0, };
+	AddCommand(C, CharNum);
 	C=In.AI,Update(B);
 	return C;
 }

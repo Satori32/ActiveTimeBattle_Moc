@@ -181,8 +181,12 @@ bool Free(AIInfo& In) {
 
 Command Update(AIInfo& In,BattleSystem& B,int16_t CharNum) {
 	Command C = { 0, };
+	Command D = { 0, };
 	AddCommand(C, CharNum);
-	C=In.AI,Update(B);
+	D=In.AI,Update(B);
+	fot(size_t i = 0; i < Size(D); i++) {
+		Push(C.C, *Index(D.C, i));
+	}
 	return C;
 }
 

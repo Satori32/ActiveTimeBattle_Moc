@@ -31,6 +31,7 @@ bool Free(Statas& In) {
 	return true;
 }
 struct ConditionItem {
+	char* Name = NULL;
 	int16_t ID = 0;
 	Clock Time;
 	int16_t Parmittion[128] = { 0, };//can replace vector.
@@ -217,6 +218,7 @@ Command Update(AIInfo& In,BattleSystem& B,int16_t CharNum) {
 struct AliveFlag {
 	bool IsAlive = false;
 	int Reason = 0;//i need like a EnumClass On C++.
+	char Mean[256] = { 0, };
 	//type T = NULL;
 	typedef int T;
 	T Hide;

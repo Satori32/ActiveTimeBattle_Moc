@@ -209,7 +209,7 @@ Command Update(AIInfo& In,BattleSystem& B,int16_t CharNum) {
 	Command D = { 0, };
 	AddCommand(C, CharNum);
 	D=In.AI,Update(B);
-	fot(size_t i = 0; i < Size(D); i++) {
+	for(size_t i = 0; i < Size(D); i++) {
 		Push(C.C, *Index(D.C, i));
 	}
 	return C;
@@ -224,11 +224,27 @@ struct AliveFlag {
 	T Hide;
 };
 
+struct LowItem {
+	char* Name = NULL;
+	char Mean[256] = { 0, };
+	int16_t ID = 0;
+	int16_t Type = 0;
+	int16_t Value = 0;
+	//type T = NULL;
+	typedef int T;
+	T Hide;
+};
+
+struct Low {
+	FixedVector<LowItem, 128> Lows;
+};
+
 struct Profile {
 	Parsonal P = { 0, };
 	Statas S = { 0, };
 	ConditionBag Good = {0,};
 	ConditionBag Bad = { 0, };
+	ConditionBag Passive = { 0, };
 	ClassInfo C = { 0, };
 	BattleInfo B = { 0, };
 	BattleInfo Use = { 0, };
@@ -262,6 +278,7 @@ struct BattleSystem{
 	Clock_t Adder;
 	clock_t Wait = 0;
 	FixedVector<Profile, 34> Box;
+	Low Lows;
 };
 
 BattleSystem ConstructBattleSystem(FixedVector<Profile, 16>& A, FixedVector<Profile, 16>& E,clock_t Wait) {
